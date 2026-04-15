@@ -9,16 +9,19 @@
 <body>
   <div class="container">
     <button class="animated-button" onclick="showPopup()">Tell me a Joke!</button>
-    <div class="popup" id="popup">
-      <span class="close" onclick="hidePopup()">&times;</span>
-      <p id="joke"></p>
-      <p id="foo">&copy; 2023 / Created by Anup.</p>
-    </div>
-    <footer>
-      <p>&copy; 2023 Joke Generator Created by 
-      <a href="https://www.sololearn.com/Profile/26681530/?ref=app" style="text-decoration:none;">Anup</a>.
-      </p>
-    </footer>
+   <div class="popup" id="popup">
+  <span class="close" onclick="hidePopup()">&times;</span>
+  
+  <p id="joke"></p>
+
+  <div class="controls">
+    <button onclick="fetchJoke()">Next Joke 😂</button>
+    <button onclick="speakJoke()">🔊 Speak</button>
+  </div>
+
+  <p id="foo">&copy; 2023 / Created by Anup.</p>
+</div>
+   
   </div>
   <script src="script.js"></script>
 </body>

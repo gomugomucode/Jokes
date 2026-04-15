@@ -85,3 +85,38 @@ footer p {
   text-align: center;
   color: #ddd;
 }
+
+
+/* Smooth popup animation */
+.popup {
+  opacity: 0;
+  transform: translate(-50%, -60%) scale(0.8);
+  transition: all 0.4s ease;
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Buttons inside popup */
+.controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.controls button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #ff4b2b;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.controls button:hover {
+  transform: scale(1.1);
+}
