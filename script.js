@@ -1,11 +1,64 @@
 let currentJokeText = "";
 let useNepali = false;
+let currentCategory = "funny";
 
-const nepaliJokes = [
-  "किन कुखुराले बाटो काट्यो? अर्को पट्टि जान!",
-  "मास्टर: किन ढिला आयौ? विद्यार्थी: सपनामा स्कूल आउँदै थिएँ!",
-  "तिमी यति स्मार्ट किन? किनभने म मोबाइल चलाउँछु 😄"
-];
+const nepaliJokes = {
+  funny: [
+    "किन कुखुराले बाटो काट्यो? अर्को पट्टि जान!",
+    "मास्टर: किन ढिला आयौ? विद्यार्थी: सपनामा स्कूल आउँदै थिएँ!",
+    "तिमी यति स्मार्ट किन? किनभने म मोबाइल चलाउँछु 😄",
+
+    "आमा: पढ्न बस! छोरा: WiFi छैन 😭",
+    "म: आजबाट जिम जान्छु 💪 ... ५ मिनेटपछि: भोलिबाट पक्का 😴",
+    "साथी: तिमी किन यति ढिलो आउँछौ? म: fashionably late 😎",
+    "मोबाइल बिना ५ मिनेट बस्नुपर्‍यो भने म त emergency मा जान्छु 📱",
+    "नेपालमा दुई कुरा फास्ट हुन्छ: gossip र WiFi password फैलिनु 😂",
+
+    "बिहान alarm बज्छ: म उठ्छु ❌ snooze गर्छु ✅",
+    "Dashain आउँदा सबै rich हुन्छन्, १ हप्तापछि सबै broke 😂",
+    "ममी: पाहुना आउँदै छन्, राम्ररी बस! ... म: acting सुरु 🎭",
+    "Exam आउँदा मात्रै भगवान याद आउँछ 🙏",
+    "नेपालमा plan बनाउनु = cancel हुनु 😄"
+  ],
+
+  savage: [
+    "तिमी यति ढिलो reply गर्छौ कि म message पठाएर बूढो भइसकें 😑",
+    "तिमी online हुन्छौ तर reply गर्दैनौ — ghost होइन, WiFi problem होला है? 👻",
+    "मेरो crush ले मलाई ignore गर्छ... जस्तो म loan हुँ बैंकको 😭",
+    "तिमीलाई देख्दा मेरो future पनि buffering जस्तो लाग्छ 📶",
+    "तिमीले diet सुरु गर्‍यौ? कि अझै फोटोमै मात्र slim छौ? 😏",
+
+    "तिमीलाई देख्दा confidence नै log out हुन्छ 😶",
+    "तिमीसँग कुरा गर्दा battery पनि drain हुन्छ 🔋",
+    "तिमीलाई ignore गर्न मलाई practice चाहिँ पर्दैन 😏"
+  ],
+
+  dark: [
+    "तिमी यति useless छौ कि calculator ले पनि तिमीलाई count गर्दैन 😬",
+    "तिमी life मा loading screen जस्तो — बस wait गराउँछौ 😑",
+
+    "मेरा सपना पनि सरकारको promise जस्तै — कहिल्यै पूरा हुँदैन 😶",
+    "जीवन यति slow छ कि buffering पनि fast लाग्छ 📶",
+    "म खुशी हुन खोज्छु... life: not today 😐",
+    "Reality check: सपनामा मात्र millionaire 😭",
+    "Monday देख्दा नै life reconsider गर्न मन लाग्छ 😵"
+  ]
+};
+
+function setCategory(category) {
+  currentCategory = category;
+
+  // remove active from all
+  document.querySelectorAll(".cat-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  // add active to clicked one
+  document.querySelector(`[data-cat="${category}"]`)
+    .classList.add("active");
+
+  fetchJoke();
+}
 
 // 🔁 Toggle language
 function toggleLanguage() {
@@ -43,14 +96,16 @@ async function fetchJoke() {
   const jokeElement = document.getElementById("joke");
   jokeElement.textContent = "Loading joke... 😄";
 
-  // 🇳🇵 Nepali mode
-  if (useNepali) {
-    const randomIndex = Math.floor(Math.random() * nepaliJokes.length);
-    currentJokeText = nepaliJokes[randomIndex];
+ // 🇳🇵 Nepali mode with categories
+if (useNepali) {
+  const jokesArray = nepaliJokes[currentCategory];
 
-    typeText(jokeElement, currentJokeText);
-    return;
-  }
+  const randomIndex = Math.floor(Math.random() * jokesArray.length);
+  currentJokeText = jokesArray[randomIndex];
+
+  typeText(jokeElement, currentJokeText);
+  return;
+}
 
   try {
     const response = await fetch("https://official-joke-api.appspot.com/random_joke");
@@ -124,7 +179,7 @@ function typeText(element, text) {
       index++;
       setTimeout(type, speed);
     } else {
-      element.textContent += " " + getRandomLaughingEmoji();
+      element.textContent += " " + getCategoryEmoji()();
     }
   }
 
@@ -132,7 +187,15 @@ function typeText(element, text) {
 }
 
 // 😂 Emoji generator
-function getRandomLaughingEmoji() {
+
+function getCategoryEmoji() {
+  if (useNepali) {
+    if (currentCategory === "funny") return "😂";
+    if (currentCategory === "savage") return "😏";
+    if (currentCategory === "dark") return "💀";
+  }
+
+  // default for English jokes
   const emojis = ["😸", "😂", "🤣", "😁", "😆"];
   return emojis[Math.floor(Math.random() * emojis.length)];
 }
@@ -160,5 +223,11 @@ window.addEventListener("click", function (e) {
 
 
 
-
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.log("SW error:", err));
+  });
+}
 
